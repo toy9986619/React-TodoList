@@ -2,22 +2,18 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 const data = [
-    {id:1 , name: "testing01"}
+    { id: 1, name: "testing01" }
 ];
 
-const ListUI = (props) => {
-    return (
-        <ul>
-            {
-                props.data.map((item) => {
-                    return (
-                        <li key={item.id}>{item.name}</li>
-                    );
-                })
-            }
-        </ul>
-    );
-}
+const ListUI = (props) => (
+    <ul>
+        {
+            props.data.map((item) => (
+                <li key={item.id}>{item.name}</li>
+            ))
+        }
+    </ul>
+);
 
 class TodoList extends React.Component {
     constructor(props) {
@@ -39,8 +35,8 @@ class TodoList extends React.Component {
     handleSubmit(e) {
         e.preventDefault();
 
-        const nextData = this.state.data.concat([{id: this.state.data.length + 1, name: this.state.inputText}]);
-        this.setState({data: nextData, inputText: ''});
+        const nextData = this.state.data.concat([{ id: this.state.data.length + 1, name: this.state.inputText }]);
+        this.setState({ data: nextData, inputText: '' });
     }
 
     render() {
