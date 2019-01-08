@@ -8,7 +8,7 @@ const HtmlWeboackPluginConfig = new HtmlWebpackPlugin({
 
 module.exports = {
     entry: [
-        './src/js/index.js'
+        './src/index.js'
     ],
 
     output: {
