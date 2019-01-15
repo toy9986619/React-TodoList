@@ -15,11 +15,12 @@ class TodoList extends React.Component {
             editTarget: null
         }
         this.onChange = this.onChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
         this.changeEdit = this.changeEdit.bind(this);
         this.editData = this.editData.bind(this);
         this.saveEditData = this.saveEditData.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
         this.handleKeyPress = this.handleKeyPress.bind(this);
+        this.handleEditBlur = this.handleEditBlur.bind(this);
     }
 
     onChange(e) {
@@ -46,8 +47,7 @@ class TodoList extends React.Component {
         let data = [...this.state.data];
         data[index] = this.state.editTarget;
 
-        this.setState({ data: data });
-        this.setState({ editTarget: null })
+        this.setState({ data: data, editTarget: null });
     }
 
     handleSubmit(e) {
@@ -61,6 +61,10 @@ class TodoList extends React.Component {
         if(e.key == 'Enter'){
             this.saveEditData()
         }
+    }
+
+    handleEditBlur() {
+        this.saveEditData();
     }
 
     render() {
@@ -78,8 +82,12 @@ class TodoList extends React.Component {
                     {
                         this.state.data.map((item) => (
                             editIndex == item.id ?
-                            <input type="text" onChange={this.editData} onKeyPress={this.handleKeyPress} 
-                                value={this.state.editTarget.name}></input>
+                            <input type="text" 
+                                onChange={this.editData} 
+                                onKeyPress={this.handleKeyPress} 
+                                onBlur={this.handleEditBlur}
+                                value={this.state.editTarget.name}
+                                autoFocus></input>
                             : <li onClick={() => {this.changeEdit(item)}} key={item.id}>{item.name}</li>
                         ))
                     }
