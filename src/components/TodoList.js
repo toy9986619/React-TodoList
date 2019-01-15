@@ -6,16 +6,6 @@ const data = [
     { id: 1, name: "testing02" }
 ];
 
-// const ListUI = (props) => (
-//     <ul>
-//         {
-//             props.data.map((item) => (
-//                 <li key={item.id}>{item.name}</li>
-//             ))
-//         }
-//     </ul>
-// );
-
 class TodoList extends React.Component {
     constructor(props) {
         super(props);
@@ -56,7 +46,8 @@ class TodoList extends React.Component {
         let data = [...this.state.data];
         data[index] = this.state.editTarget;
 
-        this.setState({data: data});
+        this.setState({ data: data });
+        this.setState({ editTarget: null })
     }
 
     handleSubmit(e) {
@@ -67,10 +58,8 @@ class TodoList extends React.Component {
     }
 
     handleKeyPress(e) {
-        console.log(e);
         if(e.key == 'Enter'){
             this.saveEditData()
-            this.setState({ editTarget: null })
         }
     }
 
