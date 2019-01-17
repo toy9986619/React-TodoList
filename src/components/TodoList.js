@@ -2,8 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 const data = [
-    { id: 0, name: "testing01" },
-    { id: 1, name: "testing02" }
+    { id: 0, name: "testing01", tags: ["JavaScript", "React"] },
+    { id: 1, name: "testing02", tags: [] }
 ];
 
 class TodoList extends React.Component {
@@ -30,7 +30,7 @@ class TodoList extends React.Component {
     }
 
     changeEdit(item) {
-        this.setState({ editTarget:item });
+        this.setState({ editTarget: item });
     }
 
     editData(e) {
@@ -42,7 +42,7 @@ class TodoList extends React.Component {
         });
     }
 
-    saveEditData(){
+    saveEditData() {
         let index = this.state.data.findIndex(item => item.id == this.state.editTarget.id);
         let data = [...this.state.data];
         data[index] = this.state.editTarget;
@@ -58,7 +58,7 @@ class TodoList extends React.Component {
     }
 
     handleKeyPress(e) {
-        if(e.key == 'Enter'){
+        if (e.key == 'Enter') {
             this.saveEditData()
         }
     }
@@ -68,7 +68,7 @@ class TodoList extends React.Component {
     }
 
     render() {
-        const editIndex = this.state.editTarget ? this.state.editTarget.id : null; 
+        const editIndex = this.state.editTarget ? this.state.editTarget.id : null;
 
         return (
             <div>
@@ -81,14 +81,33 @@ class TodoList extends React.Component {
                 <ul>
                     {
                         this.state.data.map((item) => (
-                            editIndex == item.id ?
-                            <input type="text" 
-                                onChange={this.editData} 
-                                onKeyPress={this.handleKeyPress} 
-                                onBlur={this.handleEditBlur}
-                                value={this.state.editTarget.name}
-                                autoFocus></input>
-                            : <li onClick={() => {this.changeEdit(item)}} key={item.id}>{item.name}</li>
+                            <li>
+                                <div>
+                                    {
+                                        editIndex == item.id ?
+                                            <input type="text"
+                                                onChange={this.editData}
+                                                onKeyPress={this.handleKeyPress}
+                                                onBlur={this.handleEditBlur}
+                                                value={this.state.editTarget.name}
+                                                autoFocus></input>
+                                            : <span onClick={() => { this.changeEdit(item) }}
+                                                style={{ display: 'block' }}
+                                                key={item.id}>{item.name}</span>
+                                    }
+                                </div>
+                                <div>
+                                    <span>tags: </span>
+                                    <ul style={{ display: 'inline', paddingLeft: '5px' }}>
+                                        {
+                                            item.tags.map((data) => (
+                                                <li style={{ display: 'inline', paddingLeft: '10px' }}>{data}</li>
+                                            ))
+                                        }
+                                        <li style={{ display: 'inline', paddingLeft: '10px' }}><i class="fas fa-plus-circle"></i></li>
+                                    </ul>
+                                </div>
+                            </li>
                         ))
                     }
                 </ul>
