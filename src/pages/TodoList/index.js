@@ -1,4 +1,6 @@
+/* eslint-disable jsx-a11y/no-autofocus */
 import React from 'react';
+import TodoItemList from '../../components/TodoItemList';
 
 const basicData = [
   { id: 0, name: 'testing01', tags: ['JavaScript', 'React'] },
@@ -11,8 +13,8 @@ class TodoList extends React.Component {
     this.state = {
       data: basicData,
       inputText: '',
-      editTarget: null,
-      editTagTarget: null,
+      // editTarget: null,
+      // editTagTarget: null,
     };
   }
 
@@ -22,53 +24,22 @@ class TodoList extends React.Component {
     });
   }
 
-  changeEdit = (item) => {
-    this.setState({ editTarget: item });
-  }
-
-  editData = (e) => {
-    const { editTarget } = this.state;
-    this.setState({
-      editTarget: {
-        ...editTarget,
-        name: e.target.value,
-      },
-    });
-  }
-
-  saveEditData = () => {
+  saveEditData = (editData) => {
     const { data } = this.state;
-    const { editTarget } = this.state;
-    const index = data.findIndex(item => item.id === editTarget.id);
+    const index = data.findIndex(item => item.id === editData.id);
     const nextData = [...data];
-    nextData[index] = editTarget;
+    nextData[index] = editData;
 
-    this.setState({ data: nextData, editTarget: null });
+    this.setState({ data: nextData });
   }
 
-  changeTag = (listDataId, tagIndex, data) => {
-    this.setState({ editTagTarget: { listDataId, tagIndex, data } });
-  }
-
-  editTag = (e) => {
-    const { editTagTarget } = this.state;
-
-    this.setState({
-      editTagTarget: {
-        ...editTagTarget,
-        data: e.target.value,
-      },
-    });
-  }
-
-  saveTag = () => {
+  saveTag = (editTag) => {
     const { data } = this.state;
-    const { editTagTarget } = this.state;
-    const index = data.findIndex(item => item.id === editTagTarget.listDataId);
+    const index = data.findIndex(item => item.id === editTag.listDataId);
     const listData = [...data];
-    listData[index].tags[editTagTarget.tagIndex] = editTagTarget.data;
+    listData[index].tags[editTag.tagIndex] = editTag.data;
 
-    this.setState({ data: listData, editTagTarget: null });
+    this.setState({ data: listData });
   }
 
   handleSubmit = (e) => {
@@ -81,30 +52,8 @@ class TodoList extends React.Component {
     this.setState({ data: nextData, inputText: '' });
   }
 
-  handleKeyPress = (e) => {
-    if (e.key === 'Enter') {
-      this.handleEditBlur();
-    }
-  }
-
-  handleTagEditEnterPress = (e) => {
-    if (e.key === 'Enter') {
-      this.handleTagBlur();
-    }
-  }
-
-  handleEditBlur = () => {
-    this.saveEditData();
-  }
-
-  handleTagBlur = () => {
-    this.saveTag();
-  }
-
   render() {
-    const { editTarget, inputText, data } = this.state;
-    const editIndex = editTarget ? editTarget.id : null;
-    const { editTagTarget } = this.state || null;
+    const { inputText, data } = this.state;
 
     return (
       <div>
@@ -119,75 +68,11 @@ class TodoList extends React.Component {
             {inputText}
           </p>
         </form>
-        <ul>
-          {
-            data.map(item => (
-              <li>
-                {
-                  editIndex === item.id
-                    ? (
-                      <input
-                        type="text"
-                        onChange={this.editData}
-                        onKeyPress={this.handleKeyPress}
-                        onBlur={this.handleEditBlur}
-                        value={editTarget.name}
-                        autoFocus
-                      />
-                    )
-                    : (
-                      <span
-                        onClick={() => { this.changeEdit(item); }}
-                        onKeyPress={() => { }}
-                        style={{ display: 'block' }}
-                        key={item.id}
-                        role="menuitem"
-                        tabIndex="-1"
-                      >
-                        {item.name}
-                      </span>
-                    )
-                }
-                <div>
-                  <span>tags: </span>
-                  <ul style={{ display: 'inline', padding: '0px' }}>
-                    {
-                      item.tags.map((itemData, index) => (
-                        editTagTarget && editTagTarget.listDataId
-                          === item.id && editTagTarget.tagIndex === index
-                          ? (
-                            <input
-                              type="text"
-                              onChange={this.editTag}
-                              onKeyPress={this.handleTagEditEnterPress}
-                              onBlur={this.handleTagBlur}
-                              value={editTagTarget.data}
-                              autoFocus
-                            />
-                          )
-                          : (
-                            <li style={{ display: 'inline', marginLeft: '5px', border: '1px gray solid' }}>
-                              <span
-                                onClick={() => { this.changeTag(item.id, index, itemData); }}
-                                onKeyPress={() => { }}
-                                key={itemData}
-                                role="menuitem"
-                                tabIndex="-1"
-                              >
-                                {itemData}
-                              </span>
-                              <span style={{ fontSize: '0.3rem', verticalAlign: 'super' }}><i className="fas fa-backspace fa-2x" /></span>
-                            </li>
-                          )
-                      ))
-                    }
-                    <li style={{ display: 'inline', marginLeft: '5px' }}><i className="fas fa-plus-circle" /></li>
-                  </ul>
-                </div>
-              </li>
-            ))
-          }
-        </ul>
+        <TodoItemList
+          saveData={this.saveEditData}
+          saveTag={this.saveTag}
+          data={data}
+        />
       </div>
     );
   }
