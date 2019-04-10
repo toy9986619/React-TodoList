@@ -48,7 +48,7 @@ class TodoList extends React.Component {
     const { data } = this.state;
     const { inputText } = this.state;
     const nextData = data.concat([{ id: data.length + 1, name: inputText, tags: [] }]);
-    console.log(nextData);
+
     this.setState({ data: nextData, inputText: '' });
   }
 
