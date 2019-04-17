@@ -1,8 +1,8 @@
 /* eslint-disable jsx-a11y/no-autofocus */
 import React from 'react';
 import PropTypes from 'prop-types';
-import { TodoItemInput, TodoItemSpan, TodoItemRow } from './TodoItem';
-import TodoItemTagList from './TodoItemTagList';
+import { TodoItemInput, TodoItemSpan, TodoItemRow } from './Item';
+import TodoItemTagList from './ItemTagList';
 
 class TodoItemList extends React.Component {
   constructor(props) {

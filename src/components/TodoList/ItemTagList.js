@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {
   TodoItemInput, TodoItemSpan, TodoItemRow, TodoItemTagRow,
-} from './TodoItem';
+} from './Item';
 import NewTagButton from './NewTagButton';
 
 function DeleteTagButton(props) {

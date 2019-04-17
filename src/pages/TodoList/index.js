@@ -1,11 +1,22 @@
 /* eslint-disable jsx-a11y/no-autofocus */
 import React from 'react';
-import TodoItemList from '../../components/TodoItemList';
+import styled from 'styled-components';
+import TodoItemList from '../../components/TodoList/ItemList';
+
 
 const basicData = [
   { id: 0, name: 'testing01', tags: ['JavaScript', 'React'] },
   { id: 1, name: 'testing02', tags: [] },
 ];
+
+const StyleTodoList = styled.div`
+  padding: 10px;
+  width: 600px;
+`;
+
+const CreateTodoForm = styled.form`
+  padding: 10px;
+`;
 
 class TodoList extends React.Component {
   constructor(props) {
@@ -78,24 +89,28 @@ class TodoList extends React.Component {
 
     return (
       <div>
-        <form onSubmit={this.handleSubmit}>
-          <label htmlFor="todoName">
-            輸入:
-            <input type="text" id="todoName" onChange={this.onChange} value={inputText} />
-          </label>
-          <button type="submit">加入</button>
-          <p>
-            input:
-            {inputText}
-          </p>
-        </form>
-        <TodoItemList
-          saveData={this.saveEditData}
-          saveTag={this.saveTag}
-          createTag={this.createTag}
-          deleteTag={this.deleteTag}
-          data={data}
-        />
+        <h1>TODO List</h1>
+
+        <StyleTodoList>
+          <CreateTodoForm onSubmit={this.handleSubmit}>
+            <label htmlFor="todoName">
+              輸入:
+              <input type="text" id="todoName" onChange={this.onChange} value={inputText} />
+            </label>
+            <button type="submit">加入</button>
+            <p>
+              input:
+              {inputText}
+            </p>
+          </CreateTodoForm>
+          <TodoItemList
+            saveData={this.saveEditData}
+            saveTag={this.saveTag}
+            createTag={this.createTag}
+            deleteTag={this.deleteTag}
+            data={data}
+          />
+        </StyleTodoList>
       </div>
     );
   }
