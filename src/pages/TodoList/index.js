@@ -13,8 +13,6 @@ class TodoList extends React.Component {
     this.state = {
       data: basicData,
       inputText: '',
-      // editTarget: null,
-      // editTagTarget: null,
     };
   }
 
@@ -24,32 +22,55 @@ class TodoList extends React.Component {
     });
   }
 
+  createData = () => {
+    const { data } = this.state;
+    const { inputText } = this.state;
+    const nextData = data.concat([{ id: data.length + 1, name: inputText, tags: [] }]);
+
+    this.setState({ data: nextData, inputText: '' });
+  }
+
   saveEditData = (editData) => {
     const { data } = this.state;
     const index = data.findIndex(item => item.id === editData.id);
     const nextData = [...data];
-    nextData[index] = editData;
 
+    nextData[index] = editData;
     this.setState({ data: nextData });
+  }
+
+  createTag = (tagName, listFrom) => {
+    const { data } = this.state;
+    const index = data.findIndex(item => item.name === listFrom);
+    const listData = [...data];
+
+    listData[index].tags.push(tagName);
+    this.setState({ data: listData });
   }
 
   saveTag = (editTag) => {
     const { data } = this.state;
     const index = data.findIndex(item => item.id === editTag.listDataId);
     const listData = [...data];
-    listData[index].tags[editTag.tagIndex] = editTag.data;
 
+    listData[index].tags[editTag.tagIndex] = editTag.data;
+    this.setState({ data: listData });
+  }
+
+  deleteTag = (tagName, listFrom) => {
+    const { data } = this.state;
+    const index = data.findIndex(item => item.name === listFrom);
+    const listData = [...data];
+    const tagIndex = listData[index].tags.indexOf(tagName);
+
+    listData[index].tags.splice(tagIndex, 1);
     this.setState({ data: listData });
   }
 
   handleSubmit = (e) => {
     e.preventDefault();
 
-    const { data } = this.state;
-    const { inputText } = this.state;
-    const nextData = data.concat([{ id: data.length + 1, name: inputText, tags: [] }]);
-
-    this.setState({ data: nextData, inputText: '' });
+    this.createData();
   }
 
   render() {
@@ -71,6 +92,8 @@ class TodoList extends React.Component {
         <TodoItemList
           saveData={this.saveEditData}
           saveTag={this.saveTag}
+          createTag={this.createTag}
+          deleteTag={this.deleteTag}
           data={data}
         />
       </div>

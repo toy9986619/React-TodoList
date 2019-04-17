@@ -3,6 +3,30 @@ import PropTypes from 'prop-types';
 import {
   TodoItemInput, TodoItemSpan, TodoItemRow, TodoItemTagRow,
 } from './TodoItem';
+import NewTagButton from './NewTagButton';
+
+function DeleteTagButton(props) {
+  function handleDelete() {
+    props.deleteTag(props.data);
+  }
+
+  return (
+    <span style={{ fontSize: '0.3rem', verticalAlign: 'super' }}>
+      <i
+        role="button"
+        tabIndex="-1"
+        onClick={handleDelete}
+        onKeyPress={() => { }}
+        className="fas fa-backspace fa-2x"
+      />
+    </span>
+  );
+}
+
+DeleteTagButton.propTypes = {
+  deleteTag: PropTypes.func.isRequired,
+  data: PropTypes.string.isRequired,
+};
 
 class TodoItemTagList extends React.Component {
   constructor(props) {
@@ -31,8 +55,21 @@ class TodoItemTagList extends React.Component {
   saveEditTag = () => {
     const { editTagTarget } = this.state;
     const { saveTag } = this.props;
+
     this.setState({ editTagTarget: null });
     saveTag(editTagTarget);
+  }
+
+  handleCreateTag = (tagName) => {
+    const { listFrom, createTag } = this.props;
+
+    createTag(tagName, listFrom);
+  }
+
+  handleDeleteTag = (tagName) => {
+    const { listFrom, deleteTag } = this.props;
+
+    deleteTag(tagName, listFrom);
   }
 
   handleTagEditEnterPress = (e) => {
@@ -54,7 +91,9 @@ class TodoItemTagList extends React.Component {
               editTagTarget && editTagTarget.listDataId
                 === item.id && editTagTarget.tagIndex === index
                 ? (
-                  <TodoItemRow style={{ display: 'inline', marginLeft: '5px' }}>
+                  <TodoItemRow
+                    style={{ display: 'inline', marginLeft: '5px' }}
+                  >
                     <TodoItemInput
                       editData={this.editTag}
                       handleKeyPress={this.handleTagEditEnterPress}
@@ -70,12 +109,15 @@ class TodoItemTagList extends React.Component {
                       key={itemData}
                       data={itemData}
                     />
-                    <span style={{ fontSize: '0.3rem', verticalAlign: 'super' }}><i className="fas fa-backspace fa-2x" /></span>
+                    <DeleteTagButton
+                      data={itemData}
+                      deleteTag={this.handleDeleteTag}
+                    />
                   </TodoItemTagRow>
                 )
             ))
           }
-          <li style={{ display: 'inline', marginLeft: '5px' }}><i className="fas fa-plus-circle" /></li>
+          <NewTagButton createTag={this.handleCreateTag} />
         </ul>
       </div>
     );
@@ -84,7 +126,10 @@ class TodoItemTagList extends React.Component {
 
 TodoItemTagList.propTypes = {
   saveTag: PropTypes.func.isRequired,
+  createTag: PropTypes.func.isRequired,
+  deleteTag: PropTypes.func.isRequired,
   item: PropTypes.arrayOf(PropTypes.string).isRequired,
+  listFrom: PropTypes.string.isRequired,
 };
 
 export default TodoItemTagList;

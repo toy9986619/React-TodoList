@@ -40,7 +40,10 @@ class TodoItemList extends React.Component {
   }
 
   render() {
-    const { data, saveTag } = this.props;
+    const {
+      data, saveTag, createTag,
+      deleteTag,
+    } = this.props;
     const { editTarget } = this.state;
     const editIndex = editTarget ? editTarget.id : null;
 
@@ -70,6 +73,10 @@ class TodoItemList extends React.Component {
               }
               <TodoItemTagList
                 saveTag={saveTag}
+                createTag={createTag}
+                deleteTag={deleteTag}
+                key={item.name}
+                listFrom={item.name}
                 item={item}
               />
             </TodoItemRow>
@@ -83,6 +90,8 @@ class TodoItemList extends React.Component {
 TodoItemList.propTypes = {
   saveData: PropTypes.func.isRequired,
   saveTag: PropTypes.func.isRequired,
+  createTag: PropTypes.func.isRequired,
+  deleteTag: PropTypes.func.isRequired,
   data: PropTypes.shape({
     id: PropTypes.number.isRequired,
     name: PropTypes.string.isRequired,
