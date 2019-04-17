@@ -1,7 +1,7 @@
 // HtmlWeboackPlugin config
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
-const HtmlWeboackPluginConfig = new HtmlWebpackPlugin({
+const HtmlWebpackPluginConfig = new HtmlWebpackPlugin({
   template: `${__dirname}/src/index.html`,
   filename: 'index.html',
   inject: 'body',
@@ -9,7 +9,7 @@ const HtmlWeboackPluginConfig = new HtmlWebpackPlugin({
 
 module.exports = {
   entry: [
-    './src/app.js',
+    './src/index.js',
   ],
 
   output: {
@@ -46,7 +46,10 @@ module.exports = {
   devServer: {
     inline: true,
     port: 8888,
+    historyApiFallback: {
+      index: '/index.html',
+    },
   },
 
-  plugins: [HtmlWeboackPluginConfig],
+  plugins: [HtmlWebpackPluginConfig],
 };

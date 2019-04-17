@@ -1,23 +1,9 @@
 /* eslint-disable react/jsx-filename-extension */
 import React from 'react';
-import ReactDOM from 'react-dom';
-import TodoList from './pages/TodoList/index';
+import AppRouter from './AppRouter';
 
-class App extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-
-    };
-  }
-
-  render() {
-    return (
-      <div>
-        <TodoList />
-      </div>
-    );
-  }
+function App() {
+  return <AppRouter />;
 }
 
-ReactDOM.render(<App />, document.getElementById('app'));
+export default App;
